@@ -1,0 +1,14 @@
+venv/
+plan.md/
+
+.pytest_cache/
+
+app/__pycache__/
+app/api/__pycache__/
+app/clients/__pycache__/
+app/database/__pycache__/
+app/examples/__pycache__/
+app/schemas/__pycache__/
+app/services/__pycache__/
+app/storage/__pycache__/
+app/main/__pycache__/

@@ -1,0 +1,81 @@
+{
+  "sources": [
+    {
+      "name": "JSONPlaceholder Posts",
+      "base_url": "https://jsonplaceholder.typicode.com",
+      "endpoint": "/posts",
+      "method": "GET",
+      "headers": {
+        "User-Agent": "GenericIngestionService/1.0"
+      },
+      "auth": {
+        "type": "none"
+      },
+      "params": {
+        "_limit": 10
+      },
+      "pagination": {
+        "type": "offset",
+        "page_param": "_page",
+        "size_param": "_limit",
+        "page_size": 10,
+        "initial_page": 1,
+        "max_pages": 3
+      },
+      "data_path": null,
+      "storage": {
+        "table_name": "jsonplaceholder_posts",
+        "primary_key": "id"
+      }
+    },
+    {
+      "name": "JSONPlaceholder Users",
+      "base_url": "https://jsonplaceholder.typicode.com",
+      "endpoint": "/users",
+      "method": "GET",
+      "headers": {
+        "User-Agent": "GenericIngestionService/1.0"
+      },
+      "auth": {
+        "type": "none"
+      },
+      "params": {},
+      "pagination": {
+        "type": "none"
+      },
+      "data_path": null,
+      "storage": {
+        "table_name": "jsonplaceholder_users",
+        "primary_key": "id"
+      }
+    },
+    {
+      "name": "JSONPlaceholder Comments",
+      "base_url": "https://jsonplaceholder.typicode.com",
+      "endpoint": "/comments",
+      "method": "GET",
+      "headers": {
+        "User-Agent": "GenericIngestionService/1.0"
+      },
+      "auth": {
+        "type": "none"
+      },
+      "params": {
+        "_limit": 20
+      },
+      "pagination": {
+        "type": "offset",
+        "page_param": "_page",
+        "size_param": "_limit",
+        "page_size": 20,
+        "initial_page": 1,
+        "max_pages": 2
+      },
+      "data_path": null,
+      "storage": {
+        "table_name": "jsonplaceholder_comments",
+        "primary_key": "id"
+      }
+    }
+  ]
+}

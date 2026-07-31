@@ -1,0 +1,51 @@
+{
+  "sources": [
+    {
+      "name": "SpaceX Launches",
+      "base_url": "https://api.spacexdata.com",
+      "endpoint": "/v4/launches",
+      "method": "GET",
+      "headers": {
+        "User-Agent": "GenericIngestionService/1.0",
+        "Content-Type": "application/json"
+      },
+      "auth": {
+        "type": "none"
+      },
+      "params": {},
+      "pagination": {
+        "type": "limit_offset",
+        "offset_param": "offset",
+        "limit_param": "limit",
+        "page_size": 20,
+        "max_pages": 3
+      },
+      "data_path": null,
+      "storage": {
+        "table_name": "spacex_launches",
+        "primary_key": "id"
+      }
+    },
+    {
+      "name": "SpaceX Rockets",
+      "base_url": "https://api.spacexdata.com",
+      "endpoint": "/v4/rockets",
+      "method": "GET",
+      "headers": {
+        "User-Agent": "GenericIngestionService/1.0"
+      },
+      "auth": {
+        "type": "none"
+      },
+      "params": {},
+      "pagination": {
+        "type": "none"
+      },
+      "data_path": null,
+      "storage": {
+        "table_name": "spacex_rockets",
+        "primary_key": "id"
+      }
+    }
+  ]
+}

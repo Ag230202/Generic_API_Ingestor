@@ -1,0 +1,29 @@
+{
+  "sources": [
+    {
+      "name": "DummyJSON Products",
+      "base_url": "https://dummyjson.com",
+      "endpoint": "/products",
+      "method": "GET",
+      "headers": {
+        "User-Agent": "GenericIngestionService/1.0"
+      },
+      "auth": {
+        "type": "none"
+      },
+      "params": {},
+      "pagination": {
+        "type": "offset",
+        "page_param": "skip",
+        "size_param": "limit",
+        "page_size": 30,
+        "max_pages": 3
+      },
+      "data_path": "products",
+      "storage": {
+        "table_name": "dummyjson_products",
+        "primary_key": "id"
+      }
+    }
+  ]
+}

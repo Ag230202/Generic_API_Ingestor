@@ -1,0 +1,27 @@
+{
+  "sources": [
+    {
+      "name": "Httpbin Basic Auth Test",
+      "base_url": "https://httpbin.org",
+      "endpoint": "/basic-auth/user/passwd",
+      "method": "GET",
+      "headers": {
+        "User-Agent": "GenericIngestionService/1.0"
+      },
+      "auth": {
+        "type": "basic",
+        "username": "user",
+        "password": "passwd"
+      },
+      "params": {},
+      "pagination": {
+        "type": "none"
+      },
+      "data_path": null,
+      "storage": {
+        "table_name": "httpbin_basic_auth_test",
+        "primary_key": null
+      }
+    }
+  ]
+}

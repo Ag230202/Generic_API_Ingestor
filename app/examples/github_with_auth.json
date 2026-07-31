@@ -1,0 +1,84 @@
+{
+  "sources": [
+    {
+      "name": "GitHub Octocat Repos",
+      "base_url": "https://api.github.com",
+      "endpoint": "/users/octocat/repos",
+      "method": "GET",
+      "headers": {
+        "User-Agent": "GenericIngestionService/1.0",
+        "Accept": "application/vnd.github.v3+json"
+      },
+      "auth": {
+        "type": "bearer",
+        "token": "ghp_yourTokenHere"
+      },
+      "params": {
+        "per_page": 10,
+        "sort": "updated",
+        "direction": "desc"
+      },
+      "pagination": {
+        "type": "link_header",
+        "max_pages": 2
+      },
+      "data_path": null,
+      "storage": {
+        "table_name": "github_octocat_repos",
+        "primary_key": "id"
+      }
+    },
+    {
+      "name": "GitHub Octocat Gists",
+      "base_url": "https://api.github.com",
+      "endpoint": "/users/octocat/gists",
+      "method": "GET",
+      "headers": {
+        "User-Agent": "GenericIngestionService/1.0",
+        "Accept": "application/vnd.github.v3+json"
+      },
+      "auth": {
+        "type": "bearer",
+        "token": "ghp_yourTokenHere"
+      },
+      "params": {
+        "per_page": 10
+      },
+      "pagination": {
+        "type": "link_header",
+        "max_pages": 2
+      },
+      "data_path": null,
+      "storage": {
+        "table_name": "github_octocat_gists",
+        "primary_key": "id"
+      }
+    },
+    {
+      "name": "GitHub Octocat Events",
+      "base_url": "https://api.github.com",
+      "endpoint": "/users/octocat/events",
+      "method": "GET",
+      "headers": {
+        "User-Agent": "GenericIngestionService/1.0",
+        "Accept": "application/vnd.github.v3+json"
+      },
+      "auth": {
+        "type": "bearer",
+        "token": "ghp_yourTokenHere"
+      },
+      "params": {
+        "per_page": 10
+      },
+      "pagination": {
+        "type": "link_header",
+        "max_pages": 2
+      },
+      "data_path": null,
+      "storage": {
+        "table_name": "github_octocat_events",
+        "primary_key": "id"
+      }
+    }
+  ]
+}

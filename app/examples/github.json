@@ -1,0 +1,29 @@
+{
+  "sources": [
+    {
+      "name": "GitHub Octocat Repos",
+      "base_url": "https://api.github.com",
+      "endpoint": "/users/octocat/repos",
+      "method": "GET",
+      "headers": {
+        "User-Agent": "GenericIngestionService/1.0",
+        "Accept": "application/vnd.github.v3+json"
+      },
+      "auth": {
+        "type": "none"
+      },
+      "params": {
+        "per_page": 10
+      },
+      "pagination": {
+        "type": "link_header",
+        "max_pages": 2
+      },
+      "data_path": null,
+      "storage": {
+        "table_name": "github_octocat_repos",
+        "primary_key": "id"
+      }
+    }
+  ]
+}

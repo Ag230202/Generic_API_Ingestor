@@ -1,0 +1,35 @@
+{
+  "sources": [
+    {
+      "name": "NewsAPI Top Headlines",
+      "base_url": "https://newsapi.org",
+      "endpoint": "/v2/top-headlines",
+      "method": "GET",
+      "headers": {
+        "User-Agent": "GenericIngestionService/1.0"
+      },
+      "auth": {
+        "type": "api_key",
+        "header_name": "X-Api-Key",
+        "key": "your_newsapi_key_here"
+      },
+      "params": {
+        "country": "us",
+        "pageSize": 20
+      },
+      "pagination": {
+        "type": "offset",
+        "page_param": "page",
+        "size_param": "pageSize",
+        "page_size": 20,
+        "initial_page": 1,
+        "max_pages": 3
+      },
+      "data_path": "articles",
+      "storage": {
+        "table_name": "newsapi_headlines",
+        "primary_key": null
+      }
+    }
+  ]
+}

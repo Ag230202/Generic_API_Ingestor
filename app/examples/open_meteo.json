@@ -1,0 +1,30 @@
+{
+  "sources": [
+    {
+      "name": "Open Meteo Weather - London",
+      "base_url": "https://api.open-meteo.com",
+      "endpoint": "/v1/forecast",
+      "method": "GET",
+      "headers": {
+        "User-Agent": "GenericIngestionService/1.0"
+      },
+      "auth": {
+        "type": "none"
+      },
+      "params": {
+        "latitude": 51.5074,
+        "longitude": -0.1278,
+        "hourly": "temperature_2m,windspeed_10m",
+        "forecast_days": 1
+      },
+      "pagination": {
+        "type": "none"
+      },
+      "data_path": "hourly",
+      "storage": {
+        "table_name": "weather_london_hourly",
+        "primary_key": null
+      }
+    }
+  ]
+}
