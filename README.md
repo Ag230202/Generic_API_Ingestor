@@ -1,4 +1,4 @@
-# Generic Data Ingestion Service
+# Generic API Ingestor Service
 
 Generic, configuration-driven data ingestion service written in Python with FastAPI, SQLAlchemy, and PostgreSQL.
 
