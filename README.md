@@ -1,4 +1,4 @@
-# Intentwise AI Generic Data Ingestion Service
+# Generic Data Ingestion Service
 
 Generic, configuration-driven data ingestion service written in Python with FastAPI, SQLAlchemy, and PostgreSQL.
 
