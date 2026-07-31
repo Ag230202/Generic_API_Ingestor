@@ -83,30 +83,76 @@ generic-ingestion/
 
 ---
 
-## Setup & Running
+## Setup & Running Guide
 
-### Running with Docker Compose (Recommended)
+This service can be run using either Docker Compose or direct local execution.
 
-```bash
-docker-compose up --build
-```
+### Option A: Running with Docker Compose (Recommended)
 
-Access API documentation at: `http://localhost:8000/docs`
+Docker Compose automatically stands up the FastAPI application container, coordinates networking, and configures a PostgreSQL instance.
+
+1. **Build and start the services:**
+   Run this command in the project root:
+   ```bash
+   docker-compose up --build
+   ```
+2. **Access Swagger Interactive Documentation:**
+   Open your browser and navigate to:
+   `http://localhost:8000/docs`
+3. **Verify running containers:**
+   Ensure both the database and ingestion app are running:
+   ```bash
+   docker-compose ps
+   ```
 
 ---
 
-### Running Locally
+### Option B: Running Locally
 
-```bash
-python -m venv venv
-.\venv\Scripts\activate
-pip install -r requirements.txt
+If executing outside of Docker containers:
 
-# Ensure local PostgreSQL server running
-export DATABASE_URL="postgresql+asyncpg://postgres:postgres@localhost:5432/ingestion_db"
+1. **Provision virtual environment:**
+   Create and activate a Python virtual environment:
+   ```bash
+   python -m venv venv
+   # On Windows:
+   .\venv\Scripts\activate
+   # On macOS/Linux:
+   source venv/bin/activate
+   ```
+2. **Install project dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. **Configure Database Connection Environment Variable:**
+   Create a local PostgreSQL database (e.g., named `ingestion_db`) and export your connection URI:
+   ```bash
+   # On Windows (PowerShell):
+   $env:DATABASE_URL="postgresql+asyncpg://postgres:postgres@localhost:5432/ingestion_db"
+   
+   # On macOS/Linux:
+   export DATABASE_URL="postgresql+asyncpg://postgres:postgres@localhost:5432/ingestion_db"
+   ```
+4. **Launch Development Server:**
+   Start the FastAPI app via Uvicorn:
+   ```bash
+   uvicorn app.main:app --reload
+   ```
 
-uvicorn app.main:app --reload
-```
+---
+
+### How to Trigger an Ingestion (User Instructions)
+
+1. Open `http://localhost:8000/docs`.
+2. Expand the `POST /api/v1/ingest` endpoint.
+3. Click **Try it out**.
+4. Copy and paste one of the JSON configurations from the `app/examples/` folder into the request body.
+5. Provide real API secrets (like NewsAPI key or GitHub token) inside the `auth` structure if required.
+6. Click **Execute**.
+7. Query your local database dynamically using a PostgreSQL client to view the newly ingested table schema and raw data:
+   ```sql
+   SELECT * FROM your_configured_table_name LIMIT 10;
+   ```
 
 ---
 
@@ -212,9 +258,21 @@ Send POST request to `http://localhost:8000/api/v1/ingest`:
 
 ## Design Decisions & Trade-offs
 
-1. **Config-Driven Architecture:** Decouples ingestion logic from API sources, allowing new sources to be onboarded via JSON/YAML without changing codebase.
-2. **Abstract Storage Interface:** `BaseStorage` permits future plug-and-play implementations (S3, MongoDB, Elasticsearch).
-3. **Dynamic PostgreSQL Schema Creation:** Ingests heterogeneous payloads directly without manual DDL migrations.
+### 1. Schema Generation and Reflection
+* **Dynamic Table Creation:** The service automatically infers types (`Integer`, `Float`, `Boolean`, `Text`) from the first batch of JSON records. This eliminates the need for predefined DDL schemas, allowing direct data ingestion from new APIs.
+* **Schema Evolution Limitation:** Once a table is dynamically created and reflected in MetaData using `MetaData.reflect()`, columns are fixed. Future runs with schema changes (new API response fields) will ignore columns not in the reflected database table (`record_data = {k: v for k, v in record.items() if k in table.columns}`).
+
+### 2. Storage Strategy & Upserts
+* **On Conflict Upserts:** If a `primary_key` is provided in the configuration, the storage layer uses PostgreSQL-specific `on_conflict_do_update` syntax to execute incremental updates, avoiding duplicate entries.
+* **Auto-increment Fallback:** If no primary key is specified in the configuration, an auto-incrementing `_id` column is generated to track ingested items uniquely.
+
+### 3. Modular Pagination Framework
+* **Decoupled State Engine:** `PaginationEngine` separates configuration parsed from JSON (`PaginationConfig`) from execution state tracking (`current_offset`, `current_page`, `next_url`).
+* **Universal Interface:** The client handles various strategies (Offset, Limit-Offset, Cursor, Next URL, and RFC 5988 Link Headers) through a unified `get_request_params(base_params)` signature, returning either query parameter overrides or absolute URL overrides.
+
+### 4. Normalization and Metadata Injection
+* **Traceability:** Flat structures are generated via recursion to ensure standard tabular formatting. 
+* **Ingestion Metadata:** Injected tracking attributes (`_ingestion_source`, `_ingestion_timestamp`, `_ingestion_request_id`, `_ingestion_endpoint`, `_raw_payload`) allow audit logging, tracking precisely when and from which source a database record was created.
 
 ---
 
