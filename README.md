@@ -118,6 +118,49 @@ uvicorn app.main:app --reload
 
 ---
 
+## Demo
+
+Working execution demonstration showing multi-source generic configuration support. Tested using different API configurations:
+
+### Example 1: NewsAPI Ingestion (API Key Auth & Offset Pagination)
+
+#### A. Source Configuration (JSON)
+Custom NewsAPI source configuration specifying the endpoint, query arguments, api key credentials, offset pagination rules, and target storage:
+![NewsAPI Configuration](assets/api_key_example.png)
+
+#### B. Execution (FastAPI Docs Interface)
+Triggering POST request on `/api/v1/ingest` with the NewsAPI configuration:
+![NewsAPI Ingest Screen](assets/newsapi_ingest.png)
+
+#### C. Ingestion Output
+FastAPI returns success details on normalized record throughput and operational metrics:
+![NewsAPI Ingest Response](assets/newsapi_response.png)
+
+#### D. Server Logs & SQL Verification
+Stdout splits showing container initialization, request execution, auto-generating columns, and checking record count in DB:
+![NewsAPI Logs and SQL](assets/terminal_logs.png)
+
+
+### Example 2: GitHub API Ingestion (Bearer Token & Link Header Pagination)
+
+#### A. Source Configuration (JSON)
+Multiple GitHub sources config using Bearer authentication and Link Header pagination structures:
+![GitHub Configuration](assets/github_code.png)
+
+#### B. Execution
+Executing multi-source task via Swagger UI:
+![GitHub Ingest Docs](assets/github_docs.png)
+
+#### C. Ingestion Output
+Ingestion result summarizing all successfully written batches:
+![GitHub Ingest Response](assets/github_response.png)
+
+#### D. Server Logs & SQL Verification
+Stdout split demonstrating pagination request flow and verifying row count for Repos and Gists tables inside postgres container:
+![GitHub Logs and SQL](assets/github_terminal.png)
+
+---
+
 ## Example Usage
 
 Send POST request to `http://localhost:8000/api/v1/ingest`:
